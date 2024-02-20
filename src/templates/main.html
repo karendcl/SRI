@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flash</title>
+    <link rel="stylesheet" type="text/css" href= '{% static "style.css" %}' />
+</head>
+<body>
+
+{# menu bar #}
+<div class="menu">
+    <a href="{% url 'search' %}">Search</a>
+    <a href="{% url 'about' %}">About</a>
+</div>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
