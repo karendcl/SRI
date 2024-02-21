@@ -1,5 +1,5 @@
-from src.code.process_docs import process_docs
-from src.code.fuzzy import FuzzyModel
+from process_docs import processed_docs
+from fuzzy import FuzzyModel
 
 class Document:
     def __init__(self, name, content, author):
@@ -7,7 +7,9 @@ class Document:
         self.content = content
         self.author = author
 def search(query, model):
-    documents = process_docs()
+
+    print(query)
+    documents = processed_docs()
 
     if model == 'fuzzy':
         docs = FuzzyModel(query, documents)

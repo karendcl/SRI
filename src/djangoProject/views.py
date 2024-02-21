@@ -3,7 +3,16 @@ from django.shortcuts import render, HttpResponse
 # pagination
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
-from ..code import search_model
+
+from pathlib import Path
+import sys
+import os
+
+#Add another file that is outside of the project
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(os.path.join(BASE_DIR, 'code'))
+
+import search_model
 
 
 def main(request):
