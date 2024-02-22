@@ -4,9 +4,12 @@ from django.shortcuts import render, HttpResponse
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 
+from Document.models import Documents
+
 from pathlib import Path
 import sys
 import os
+import json
 
 #Add another file that is outside of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +22,14 @@ def main(request):
     return render(request, 'main.html')
 
 def about(request):
-    return render(request, 'main.html')
+
+    docs = Documents.objects.all()
+
+    paginator = Paginator(docs, 3)
+    page = request.GET.get('page')
+    page_obj = paginator.get_page(page)
+    return render(request, 'about.html', {'page_obj': page_obj})
+
 
 
 
@@ -28,20 +38,18 @@ def search(request):
         search = request.POST['search']
         model = request.POST['model']
 
-        docs = search_model.search(query=search, model=model)
+        index = search_model.search(query=search, model=model)
+        docs = Documents.objects.filter(id__in=index)
 
-        paginator = Paginator(docs, 3)
-        page = request.GET.get('page')
-        page_obj = paginator.get_page(page)
-        return render(request, "search.html", {"page_obj": page_obj})
+    else:
+        docs = Documents.objects.all()
 
+    #truncate the description
+    for doc in docs:
+        if len(doc.content) > 300:
+            doc.content = doc.content[:300] + "..."
 
-
-
-    # return documents in a paginator
-    documents = ['Document 1', 'Document 2', 'Document 3', 'Document 4', 'Document 5', 'Document 6', 'Document 7']
-
-    paginator = Paginator(documents, 3)
+    paginator = Paginator(docs, 3)
     page = request.GET.get('page')
     page_obj = paginator.get_page(page)
     return render(request, "search.html", {"page_obj": page_obj})
