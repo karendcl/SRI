@@ -1,6 +1,7 @@
 from process_docs import processed_docs
 from fuzzy import FuzzyModel
 from boolean_Model import BooleanModel
+import pickle
 
 class Document:
     def __init__(self, name, content, author):
@@ -11,12 +12,19 @@ class Document:
 def search(query, model, documents):
 
     print(query)
-    tokenized_docs = []
-    vector_repr = []
-    dictionary = {}
-    vocabulary = []
-    CompleteDocuments = []
-    tokenized_docs, vector_repr, dictionary, vocabulary, CompleteDocuments = processed_docs()
+
+
+    try:
+        with open('tokenized_docs.pkl', 'rb') as f:
+            tokenized_docs = pickle.load(f)
+        with open('dictionary.pkl', 'rb') as f:
+            dictionary = pickle.load(f)
+    except:
+        tokenized_docs, vector_repr, dictionary, vocabulary, CompleteDocuments = processed_docs()
+        with open('tokenized_docs.pkl', 'wb') as f:
+            pickle.dump(tokenized_docs, f)
+        with open('dictionary.pkl', 'wb') as f:
+            pickle.dump(dictionary, f)
 
     if model == 'fuzzy':
         docs = FuzzyModel(query, tokenized_docs)
