@@ -38,8 +38,10 @@ def search(request):
         search = request.POST['search']
         model = request.POST['model']
 
-        index = search_model.search(query=search, model=model)
-        docs = Documents.objects.filter(id__in=index)
+        docus = Documents.objects.all()
+        docss = [doc.content for doc in docus]
+        index = search_model.search(query=search, model=model, documents = docss)
+        docs = [Documents.objects.get(id=i+1) for i in index]
 
     else:
         docs = Documents.objects.all()

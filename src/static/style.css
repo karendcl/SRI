@@ -96,24 +96,16 @@
     align-items: center;
 }
 
-.results li {
-    list-style: none;
-    padding: 10px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: 0.3s;
-
-/*    bottom border is a line */
-    border-bottom: 2px solid lightgray;
-}
 
 .pagination{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+
 }
 
 .pagination a{
@@ -127,7 +119,6 @@
 
 .pagination a:hover{
     background-color: lightpink;
-    color: white;
 }
 
 
@@ -135,4 +126,53 @@
 .pagination a:visited{
     text-decoration: none;
     color: black;
+}
+
+.pagination a:active{
+    text-decoration: none;
+    color: black;
+}
+
+.pagination a:focus{
+    text-decoration: none;
+    color: black;
+}
+
+.pagination a{
+    text-decoration: none;
+    color: black;
+
+}
+
+.results{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 60%;
+    margin: 0 auto;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 20px;
+}
+
+
+
+.results a{
+    text-decoration: underline;
+    color: deeppink;
+    transition: 0.1s;
+}
+
+.results a:hover{
+    text-decoration: underline;
+    text-shadow: 1px 1px 1px black;
+    color: lightcoral;
+}
+
+.results p{
+    margin-left: 10px;
+
+    width: 100%;
+    text-align: left;
+
 }

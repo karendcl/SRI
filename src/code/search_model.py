@@ -8,7 +8,7 @@ class Document:
         self.content = content
         self.author = author
 
-def search(query, model):
+def search(query, model, documents):
 
     print(query)
     tokenized_docs = []

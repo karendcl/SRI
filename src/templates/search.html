@@ -27,14 +27,10 @@
     {% else %}
     
     {% for document in page_obj %}
-    <ul>
-     <li>Title: {{ document.title }}
-        <br>
-        <a href="{{ document.url }}" target="_blank">See On Goodreads</a>
-        <br>
-         Description: {{ document.content }}
-     </li>
-    </ul>
+        <div class="result">
+            <h2><a href="{{ document.url }}" target="_blank">{{ document.title }}</a></h2>
+            <p>{{ document.content|safe }}</p>
+        </div>
     {% endfor %}
     </div>
         
