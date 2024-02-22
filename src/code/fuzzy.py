@@ -71,15 +71,3 @@ def FuzzyModel(query, documents):
 
     #order the documents by the mean score and return the index of the documents
     return sorted(range(len(mean_score_doc)), key=lambda k: mean_score_doc[k], reverse=True)
-
-
-
-
-doc1 = ['the', 'cat', 'in', 'the', 'hat']
-doc2 = ['the', 'cat', 'in', 'the', 'tree']
-doc3 = ['the', 'dog', 'in', 'the', 'hat']
-doc4 = ['this', 'is', 'a', 'test', 'document']
-doc5 = ['the', 'cat', 'in', 'the', 'hat', 'and', 'the', 'tree', 'tree']
-query = 'the cat in the tree'
-
-print(FuzzyModel(query, [doc1, doc2, doc3, doc4, doc5]))
