@@ -8,6 +8,7 @@ def TFIDF_first_time(documents):
         pickle.dump(vectorizer, f)
     with open('matrix_tfidf.pkl', 'wb') as f:
         pickle.dump(matrix_tfidf, f)
+    
     return vectorizer, matrix_tfidf
 
 def Matrix_TFIDF(documents):
@@ -37,10 +38,10 @@ def give_weight(documents):
     Returns
     dict: word: weight
     '''
-
     vectorizer, matrix_tfidf = TFIDF_first_time(documents)
 
     weights: list[dict] = []
+
     for doc in range(len(documents)):
         weights.append(dict(zip(vectorizer.get_feature_names_out(), matrix_tfidf.toarray()[doc])))
 
@@ -65,7 +66,9 @@ def FuzzyModel(query, documents):
     docs = [' '.join(doc) for doc in documents]
 
     pesos = give_weight(docs)
+    print("Terminé weights")
     scores = [Similitud_MMM(query, peso) for peso in pesos]
+    print("Terminé similitud")
 
     mean_score_doc = [sum(score) / len(score) for score in scores]
 
