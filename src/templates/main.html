@@ -11,7 +11,8 @@
 
 {# menu bar #}
 <div class="menu">
-    <a href="{% url 'search' %}">Search</a>
+{#    href to search with a boolean as argument#}
+    <a href="{% url 'search' True %}">Search</a>
     <a href="{% url 'about' %}">Suggestions</a>
 </div>
 
