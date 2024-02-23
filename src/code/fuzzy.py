@@ -19,6 +19,7 @@ def Matrix_TFIDF(documents):
             matrix_tfidf = pickle.load(f)
         return vectorizer, matrix_tfidf
     except:
+        print('calculating tfidf')
         vectorizer = TfidfVectorizer()
         matrix_tfidf = vectorizer.fit_transform(documents)
         with open('vect.pkl', 'wb') as f:
@@ -57,12 +58,15 @@ def FuzzyModel(query, documents):
     docs = [' '.join(doc) for doc in documents]
 
     vectorizer, matrix_tfidf = Matrix_TFIDF(docs)
+    print('got tfidf')
 
     query = query.split()
     query = [word for word in query if word in vectorizer.vocabulary_]
     indices = indices_of_words_from_query(query, vectorizer)
 
     scores = [Similitud_MMM(indices, matrix_tfidf, i) for i in range(len(documents))]
+
+    print('got scores')
 
     mean_score_doc = [sum(score) / len(score) for score in scores]
 
