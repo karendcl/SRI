@@ -171,8 +171,83 @@
 
 .results p{
     margin-left: 10px;
-
     width: 100%;
     text-align: left;
+}
+
+.results .intro{
+    width: 100%;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+
+    h3 {
+        color: deeppink;
+        margin: 10px;
+        font-weight: bold;
+        font-size: larger;
+    /*    underline*/
+        text-decoration: underline;
+        text-shadow: lightcoral;
+        text-emphasis: lightcoral;
+    }
+
+
 
 }
+
+.results .intro .authors{
+
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 50%;
+    border-right: 1px solid lightgray;
+
+
+}
+
+.results .intro .genres{
+
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 50%;
+
+}
+
+.results .intro li{
+    list-style: none;
+}
+
+.rec button{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid lightpink;
+    background-color: lightpink;
+
+    cursor: pointer;
+    transition: 0.3s;
+    width: 20%
+    margin: 0 auto;
+}
+
+.rec button:hover{
+    background-color: lightcoral;
+    color: white;
+}
+
+.rec {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+

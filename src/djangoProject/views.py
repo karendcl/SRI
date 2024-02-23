@@ -16,6 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(os.path.join(BASE_DIR, 'code'))
 
 import search_model
+import recommend
 
 
 def main(request):
@@ -68,4 +69,29 @@ def search(request, first = None):
     page = request.GET.get('page')
     page_obj = paginator.get_page(page)
     return render(request, "search.html", {"page_obj": page_obj})
+
+
+def recommendation(request):
+    #try to retrieve the docs from the session
+    try:
+        docs = request.session['docs']
+    except:
+        print("No docs in session")
+        return render(request, "recommendation.html", {"page_obj": None})
+
+    #get the recommendations
+    print(docs)
+    rec, authors, genres = recommend.get_recommendations(docs)
+    print(authors)
+
+    paginator = Paginator(rec, 3)
+    page = request.GET.get('page')
+    page_obj = paginator.get_page(page)
+    return render(request, "recommendation.html", {"page_obj": page_obj, "authors": authors, "genres": genres})
+
+
+
+
+
+
 

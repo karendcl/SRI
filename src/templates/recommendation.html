@@ -1,0 +1,61 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+
+<div class="results">
+    {% if page_obj.paginator.count == 0 %}
+        <h1>No Results Found</h1>
+    {% else %}
+
+        <div class="intro">
+        <div class="authors">
+        <h3>Relevant Authors:</h3>
+        {% for auth in authors %}
+            <ul>
+                <li>{{ auth }}</li>
+            </ul>
+        {% endfor %}
+        </div>
+
+        <div class="genres">
+        <h3>Relevant Tags:</h3>
+        {% for key in genres %}
+            <ul>
+                <li>{{ key }}</li>
+            </ul>
+        {% endfor %}
+        </div>
+        </div>
+
+        <h3> Recommendations: </h3>
+    {% for document in page_obj %}
+        <div class="result">
+            <h2><a href="{{ document.url }}" target="_blank">{{ document.title }}</a></h2>
+            <p>{{ document.content|safe }}</p>
+        </div>
+    {% endfor %}
+    </div>
+
+        <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    {% endif %}
+
+
+{% endblock %}
