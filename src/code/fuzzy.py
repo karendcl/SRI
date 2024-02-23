@@ -32,7 +32,6 @@ def indices_of_words_from_query(query, vectorizer):
 
 from math import inf
 def Similitud_MMM(query_ind, matrix_tfidf, doc_ind: int):
-    print('similitud')
 
     co1 = 0.2
     co2 = 0.7
@@ -59,7 +58,6 @@ def FuzzyModel(query, documents):
 
     vectorizer, matrix_tfidf = Matrix_TFIDF(docs)
 
-    query = query.lower()
     query = query.split()
     query = [word for word in query if word in vectorizer.vocabulary_]
     indices = indices_of_words_from_query(query, vectorizer)
