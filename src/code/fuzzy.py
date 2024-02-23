@@ -27,27 +27,12 @@ def Matrix_TFIDF(documents):
             pickle.dump(matrix_tfidf, f)
         return vectorizer, matrix_tfidf
 
-def give_weight(documents):
-    '''
-    Give each word of the corpus a weight based on its relevance (tfidf)
-    The weight is continuous between 0 and 1
+def indices_of_words_from_query(query, vectorizer):
+    return [vectorizer.vocabulary_[word] for word in query if word in vectorizer.vocabulary_]
 
-    Parameters
-    documents: list of strings
-
-    Returns
-    dict: word: weight
-    '''
-    vectorizer, matrix_tfidf = TFIDF_first_time(documents)
-
-    weights: list[dict] = []
-
-    for doc in range(len(documents)):
-        weights.append(dict(zip(vectorizer.get_feature_names_out(), matrix_tfidf.toarray()[doc])))
-
-    return weights
-
-def Similitud_MMM(query, pesos):
+from math import inf
+def Similitud_MMM(query_ind, matrix_tfidf, doc_ind: int):
+    print('similitud')
 
     co1 = 0.2
     co2 = 0.7
@@ -55,22 +40,37 @@ def Similitud_MMM(query, pesos):
     cy1 = 0.8
     cy2 = 0.2
 
-    sim_o = max(pesos[term] for term in query.split())
-    sim_y = min(pesos[term] for term in query.split())
+    min = inf
+    max = -inf
 
-    return co1*sim_o + co2*sim_y, cy1*sim_o + cy2*sim_y
+    for i in query_ind:
+        if matrix_tfidf[doc_ind, i] < min:
+            min = matrix_tfidf[doc_ind, i]
+        if matrix_tfidf[doc_ind, i] > max:
+            max = matrix_tfidf[doc_ind, i]
+
+    return co1 * min + co2 * max, cy1 * min + cy2 * max
+
 
 
 def FuzzyModel(query, documents):
 
     docs = [' '.join(doc) for doc in documents]
 
-    pesos = give_weight(docs)
-    print("Terminé weights")
-    scores = [Similitud_MMM(query, peso) for peso in pesos]
-    print("Terminé similitud")
+    vectorizer, matrix_tfidf = Matrix_TFIDF(docs)
+
+    query = query.lower()
+    query = query.split()
+    query = [word for word in query if word in vectorizer.vocabulary_]
+    indices = indices_of_words_from_query(query, vectorizer)
+
+    scores = [Similitud_MMM(indices, matrix_tfidf, i) for i in range(len(documents))]
 
     mean_score_doc = [sum(score) / len(score) for score in scores]
 
     #order the documents by the mean score and return the index of the documents
-    return sorted(range(len(mean_score_doc)), key=lambda k: mean_score_doc[k], reverse=True)
+    ordered =  sorted(range(len(mean_score_doc)), key=lambda k: mean_score_doc[k], reverse=True)
+
+    #return the indices of docs that have a score greater than 0
+    return [i for i in ordered if mean_score_doc[i] > 0]
+
