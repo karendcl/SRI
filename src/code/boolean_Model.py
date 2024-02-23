@@ -3,7 +3,6 @@ import sympy
 def query_to_dnf(query): 
 
     operators = ['&', '|', '~','(',')'] 
-    query = query.lower() 
      
     #add spaces between the brackets 
     query = query.replace('(', ' ( ').replace(')', ' ) ') 

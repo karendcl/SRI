@@ -3,12 +3,17 @@ import nltk
 import spacy
 import gensim
 
-def processed_docs():
+def processed_docs(Use_ir, Our_Corpus):
     #Load corpus
+    documents = []
 
-    dataset = ir_datasets.load("cranfield")
-    documents = [doc.text for doc in dataset.docs_iter()]
-    CompleteDocuments = [doc for doc in dataset.docs_iter]
+    if Use_ir:
+        dataset = ir_datasets.load("cranfield")
+        documents = [doc.text for doc in dataset.docs_iter()]
+    else:
+        for doc in Our_Corpus:
+            CurrentDoc = doc.lower()
+            documents.append(CurrentDoc)
 
     tokenized_docs = []
     vector_repr = []
@@ -43,7 +48,7 @@ def processed_docs():
 
 
     def filter_tokens_by_occurrence(tokenized_docs, no_below=5, no_above=0.5):
-        global dictionary
+        
         dictionary = gensim.corpora.Dictionary(tokenized_docs)
         dictionary.filter_extremes(no_below=no_below, no_above=no_above)
 
@@ -70,8 +75,9 @@ def processed_docs():
 
     tokenized_docs = morphological_reduction_spacy(remove_stopwords_spacy(remove_noise_spacy(tokenization_spacy(documents))), True)
     tokenized_docs = filter_tokens_by_occurrence(tokenized_docs)
-    vector_repr = vector_representation(tokenized_docs, dictionary, vector_repr)
     dictionary = gensim.corpora.Dictionary(tokenized_docs)
+    vector_repr = vector_representation(tokenized_docs, dictionary, vector_repr)
     vocabulary = list(dictionary.token2id.keys())
 
-    return tokenized_docs, vector_repr, dictionary, vocabulary, CompleteDocuments
+
+    return tokenized_docs, vector_repr, dictionary, vocabulary

@@ -10,9 +10,7 @@ class Document:
         self.author = author
 
 def search(query, model, documents):
-
-    print(query)
-
+    query = query.lower()
 
     try:
         with open('tokenized_docs.pkl', 'rb') as f:
@@ -20,11 +18,12 @@ def search(query, model, documents):
         with open('dictionary.pkl', 'rb') as f:
             dictionary = pickle.load(f)
     except:
-        tokenized_docs, vector_repr, dictionary, vocabulary, CompleteDocuments = processed_docs()
+        tokenized_docs, vector_repr, dictionary, vocabulary = processed_docs(False, documents)
         with open('tokenized_docs.pkl', 'wb') as f:
             pickle.dump(tokenized_docs, f)
         with open('dictionary.pkl', 'wb') as f:
             pickle.dump(dictionary, f)
+
 
     if model == 'fuzzy':
         docs = FuzzyModel(query, tokenized_docs)
