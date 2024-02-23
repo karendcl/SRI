@@ -40,11 +40,23 @@ def search(request):
 
         docus = Documents.objects.all()
         docss = [doc.content for doc in docus]
-        index = search_model.search(query=search, model=model, documents = docss)
-        docs = [Documents.objects.get(id=i+1) for i in index]
+        docs = search_model.search(query=search, model=model, documents = docss)
+        docs = [i+1 for i in docs]
+        request.session['docs'] = docs
+
+        docs = Documents.objects.filter(id__in=docs)
 
     else:
-        docs = Documents.objects.all()
+
+        #if the user is changing the page, we need to get the documents from the session
+        try:
+            docs = request.session['docs']
+
+        except:
+            docs = Documents.objects.all()
+            docs = [doc.id + 1 for doc in docs]
+
+        docs = Documents.objects.filter(id__in=docs)
 
     #truncate the description
     for doc in docs:
