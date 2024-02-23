@@ -22,5 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name='main'),
     path('about/', views.about, name='about'),
-    path('search/', views.search, name='search')
+    #search method in views receives an argument
+    path('search/', views.search, name='search'),
+    path('search/<str:first>/', views.search, name='search'),
+
 ]

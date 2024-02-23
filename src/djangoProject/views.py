@@ -33,7 +33,7 @@ def about(request):
 
 
 
-def search(request):
+def search(request, first = None):
     if request.method =='POST':
         search = request.POST['search']
         model = request.POST['model']
@@ -47,14 +47,15 @@ def search(request):
         docs = Documents.objects.filter(id__in=docs)
 
     else:
-
-        #if the user is changing the page, we need to get the documents from the session
-        try:
-            docs = request.session['docs']
-
-        except:
+        if first:
             docs = Documents.objects.all()
-            docs = [doc.id + 1 for doc in docs]
+            docs = [i.id for i in docs]
+            request.session['docs'] = docs
+        else:
+            docs = request.session['docs']
+            docs = [i for i in docs]
+
+
 
         docs = Documents.objects.filter(id__in=docs)
 
