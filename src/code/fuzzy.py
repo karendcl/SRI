@@ -55,6 +55,8 @@ def FuzzyModel(query, documents, metrics):
     scores = [Similitud_MMM(indices, matrix_tfidf, i) for i in range(len(documents))]
     print("terminé similitud")
 
+    print('got scores')
+
     mean_score_doc = [sum(score) / len(score) for score in scores]
 
     #order the documents by the mean score and return the index of the documents

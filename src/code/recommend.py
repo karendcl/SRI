@@ -16,10 +16,10 @@ def get_recommendations(results_ind):
             possible_rec.append(i)
 
     authors_ = sorted(authors.items(), key=lambda x: x[1], reverse=True)
-    authors = [i[0] for i in authors_ if i[1] > 1]
+    authors = [i[0] for i in authors_ if i[1] >= 1][: 10 if len(authors) > 10 else len(authors)]
 
-    genres = sorted(genres.items(), key=lambda x: x[1], reverse=True)
-    genres = [i[0] for i in genres if i[1] > 5]
+    genres_ = sorted(genres.items(), key=lambda x: x[1], reverse=True)
+    genres = [i[0] for i in genres_ if i[1] >= 1][: len(authors) if len(genres) > len(authors) else len(genres)]
 
     rec = {}
     for i in possible_rec:
@@ -28,11 +28,13 @@ def get_recommendations(results_ind):
             rec[i] = authors_[authors.index(i.author)][1]
         for j in i.genres.split(", "):
             if j in genres:
-                rec[i] = rec.get(i, 0) + 1
+                rec[i] = rec.get(i, 0) + genres_[genres.index(j)][1]
 
     rec = sorted(rec.items(), key=lambda x: x[1], reverse=True)
+    rec = [i[0] for i in rec]
+
     if len(rec) > 100:
-        rec = [i[0] for i in rec][:100]
+        rec = rec[:100]
 
     return rec, authors, genres
 
