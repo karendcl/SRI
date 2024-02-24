@@ -7,7 +7,7 @@ def query_to_dnf(query):
     #add spaces between the brackets 
     query = query.replace('(', ' ( ').replace(')', ' ) ') 
      
-    processed_query = query.replace("and", "&").replace("or", "|").replace("not", "~") 
+    processed_query = query.replace(" and ", "&").replace(" or ", "|").replace(" not ", "~") 
      
     tokenized = processed_query.split() 
      
@@ -22,7 +22,7 @@ def query_to_dnf(query):
      
     # Convertir a expresión sympy y aplicar to_dnf 
     query_expr = sympy.sympify(processed_query, evaluate=False) 
-    query_dnf = sympy.to_dnf(query_expr, simplify=True) 
+    query_dnf = sympy.to_dnf(query_expr, simplify=True, force = True) 
  
     return query_dnf 
 

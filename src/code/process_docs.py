@@ -1,19 +1,14 @@
-import ir_datasets
 import nltk
 import spacy
 import gensim
 
-def processed_docs(Use_ir, Our_Corpus):
+def processed_docs(Corpus):
     #Load corpus
     documents = []
 
-    if Use_ir:
-        dataset = ir_datasets.load("cranfield")
-        documents = [doc.text for doc in dataset.docs_iter()]
-    else:
-        for doc in Our_Corpus:
-            CurrentDoc = doc.lower()
-            documents.append(CurrentDoc)
+    for doc in Corpus:
+        CurrentDoc = doc.lower()
+        documents.append(CurrentDoc)
 
     tokenized_docs = []
     vector_repr = []

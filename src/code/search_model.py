@@ -1,6 +1,7 @@
 from process_docs import processed_docs
 from fuzzy import FuzzyModel
 from boolean_Model import BooleanModel
+from tfIdf_Matrix import Matrix_TFIDF
 import pickle
 
 class Document:
@@ -18,7 +19,9 @@ def search(query, model, documents):
         with open('dictionary.pkl', 'rb') as f:
             dictionary = pickle.load(f)
     except:
-        tokenized_docs, vector_repr, dictionary, vocabulary = processed_docs(False, documents)
+        tokenized_docs, vector_repr, dictionary, vocabulary = processed_docs(documents)
+        Matrix_TFIDF(tokenized_docs, False)
+
         with open('tokenized_docs.pkl', 'wb') as f:
             pickle.dump(tokenized_docs, f)
         with open('dictionary.pkl', 'wb') as f:
@@ -26,7 +29,7 @@ def search(query, model, documents):
 
 
     if model == 'fuzzy':
-        docs = FuzzyModel(query, tokenized_docs)
+        docs = FuzzyModel(query, tokenized_docs, False)
     else:
         docs = BooleanModel(query, tokenized_docs, dictionary)
 

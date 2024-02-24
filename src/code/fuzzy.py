@@ -1,36 +1,27 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
+from math import inf
 
-def TFIDF_first_time(documents):
-    vectorizer = TfidfVectorizer()
-    matrix_tfidf = vectorizer.fit_transform(documents)
-    with open('vect.pkl', 'wb') as f:
-        pickle.dump(vectorizer, f)
-    with open('matrix_tfidf.pkl', 'wb') as f:
-        pickle.dump(matrix_tfidf, f)
-    
+def Matrix_TFIDF(metrics):
+    if metrics:
+        pkl_vect_name = 'vect_for_metrics.pkl'
+        pkl_matrix_name = 'matrix_tfidf_for_metrics.pkl'
+    else:
+        pkl_vect_name = 'vect.pkl'
+        pkl_matrix_name = 'matrix_tfidf.pkl'
+
+    with open(pkl_vect_name, 'rb') as f:
+        vectorizer = pickle.load(f)
+    with open(pkl_matrix_name, 'rb') as f:
+        matrix_tfidf = pickle.load(f)
+
     return vectorizer, matrix_tfidf
 
-def Matrix_TFIDF(documents):
-    try:
-        with open('vect.pkl', 'rb') as f:
-            vectorizer = pickle.load(f)
-        with open('matrix_tfidf.pkl', 'rb') as f:
-            matrix_tfidf = pickle.load(f)
-        return vectorizer, matrix_tfidf
-    except:
-        vectorizer = TfidfVectorizer()
-        matrix_tfidf = vectorizer.fit_transform(documents)
-        with open('vect.pkl', 'wb') as f:
-            pickle.dump(vectorizer, f)
-        with open('matrix_tfidf.pkl', 'wb') as f:
-            pickle.dump(matrix_tfidf, f)
-        return vectorizer, matrix_tfidf
 
 def indices_of_words_from_query(query, vectorizer):
     return [vectorizer.vocabulary_[word] for word in query if word in vectorizer.vocabulary_]
 
-from math import inf
+
 def Similitud_MMM(query_ind, matrix_tfidf, doc_ind: int):
 
     co1 = 0.2
@@ -52,17 +43,17 @@ def Similitud_MMM(query_ind, matrix_tfidf, doc_ind: int):
 
 
 
-def FuzzyModel(query, documents):
+def FuzzyModel(query, documents, metrics):
 
-    docs = [' '.join(doc) for doc in documents]
-
-    vectorizer, matrix_tfidf = Matrix_TFIDF(docs)
+    vectorizer, matrix_tfidf = Matrix_TFIDF(metrics)
 
     query = query.split()
     query = [word for word in query if word in vectorizer.vocabulary_]
     indices = indices_of_words_from_query(query, vectorizer)
 
+    print("Empecé similitud")
     scores = [Similitud_MMM(indices, matrix_tfidf, i) for i in range(len(documents))]
+    print("terminé similitud")
 
     mean_score_doc = [sum(score) / len(score) for score in scores]
 
