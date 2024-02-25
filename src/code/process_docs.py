@@ -2,39 +2,23 @@ import nltk
 import spacy
 import gensim
 
-def processed_docs(Corpus):
-    #Load corpus
-    documents = []
-
-    for doc in Corpus:
-        CurrentDoc = doc.lower()
-        documents.append(CurrentDoc)
-
-    tokenized_docs = []
-    vector_repr = []
-    dictionary = {}
-    vocabulary = []
-
-    nlp = spacy.load("en_core_web_sm")
-
-    #Preprocesing
-
-    def tokenization_spacy(texts):
+def tokenization_spacy(texts):
+        nlp = spacy.load("en_core_web_sm")
         return [[token for token in nlp(doc)] for doc in texts]
 
 
-    def remove_noise_spacy(tokenized_docs):
+def remove_noise_spacy(tokenized_docs):
         return [[token for token in doc if token.is_alpha] for doc in tokenized_docs]
 
 
-    def remove_stopwords_spacy(tokenized_docs):
+def remove_stopwords_spacy(tokenized_docs):
         stopwords = spacy.lang.en.stop_words.STOP_WORDS
         return [
         [token for token in doc if token.text not in stopwords] for doc in tokenized_docs
         ]
 
 
-    def morphological_reduction_spacy(tokenized_docs, use_lemmatization=True):
+def morphological_reduction_spacy(tokenized_docs, use_lemmatization=True):
         stemmer = nltk.stem.PorterStemmer()
         return [
         [token.lemma_ if use_lemmatization else stemmer.stem(token.text) for token in doc]
@@ -42,7 +26,7 @@ def processed_docs(Corpus):
         ]
 
 
-    def filter_tokens_by_occurrence(tokenized_docs, no_below=5, no_above=0.5):
+def filter_tokens_by_occurrence(tokenized_docs, no_below=5, no_above=0.5):
         
         dictionary = gensim.corpora.Dictionary(tokenized_docs)
         dictionary.filter_extremes(no_below=no_below, no_above=no_above)
@@ -56,17 +40,29 @@ def processed_docs(Corpus):
         return filtered_tokens
 
 
-    def vector_representation(tokenized_docs, dictionary, vector_repr, use_bow=True):
-        corpus = [dictionary.doc2bow(doc) for doc in tokenized_docs]
+def vector_representation(tokenized_docs, dictionary, vector_repr, use_bow=True):
+    corpus = [dictionary.doc2bow(doc) for doc in tokenized_docs]
 
-        if use_bow:
-            vector_repr = corpus
-        else:
-            tfidf = gensim.models.TfidfModel(corpus)
-            vector_repr = [tfidf[doc] for doc in corpus]
+    if use_bow:
+        vector_repr = corpus
+    else:
+        tfidf = gensim.models.TfidfModel(corpus)
+        vector_repr = [tfidf[doc] for doc in corpus]
 
-        return vector_repr
+    return vector_repr
 
+def processed_docs(Corpus):
+    #Load corpus
+    documents = []
+
+    for doc in Corpus:
+        CurrentDoc = doc.lower()
+        documents.append(CurrentDoc)
+
+    tokenized_docs = []
+    vector_repr = []
+    dictionary = {}
+    vocabulary = []
 
     tokenized_docs = morphological_reduction_spacy(remove_stopwords_spacy(remove_noise_spacy(tokenization_spacy(documents))), True)
     tokenized_docs = filter_tokens_by_occurrence(tokenized_docs)
@@ -74,5 +70,13 @@ def processed_docs(Corpus):
     vector_repr = vector_representation(tokenized_docs, dictionary, vector_repr)
     vocabulary = list(dictionary.token2id.keys())
 
-
     return tokenized_docs, vector_repr, dictionary, vocabulary
+
+def processed_query(query):
+      query = query.lower()
+      Query = []
+      Query.append(query)
+
+      processed_Query = morphological_reduction_spacy(remove_stopwords_spacy(remove_noise_spacy(tokenization_spacy(Query))), True)
+
+      return ' '.join(processed_Query[0])

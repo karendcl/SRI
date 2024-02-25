@@ -8,9 +8,11 @@ def query_to_dnf(query):
     query = query.replace('(', ' ( ').replace(')', ' ) ') 
      
     processed_query = query.replace(" and ", "&").replace(" or ", "|").replace(" not ", "~") 
-     
-    tokenized = processed_query.split() 
-     
+    tokenized = processed_query.split()
+    tokenized = [token for token in tokenized if token != "pass" and token != "use" and token != "field"
+                 and token != "harmonic" and token != "maximum" and token != "print" and token != "input"]
+    
+
     #stay with alphanumeric characters 
     tokenized = [word for word in tokenized if word.isdigit() is False or word in operators] 
      
@@ -21,6 +23,9 @@ def query_to_dnf(query):
     processed_query = ' '.join(tokenized) 
      
     # Convertir a expresión sympy y aplicar to_dnf 
+    if processed_query == "":
+       return "error"
+    
     query_expr = sympy.sympify(processed_query, evaluate=False) 
     query_dnf = sympy.to_dnf(query_expr, simplify=True, force = True) 
  
@@ -30,6 +35,8 @@ def query_to_dnf(query):
 def BooleanModel(query, documents, dictionary):  
  
     query_dnf = query_to_dnf(query)
+    if query_dnf == "error":
+       return []
     forms = query_dnf.args 
     Query = str(query_dnf) 
     terms = Query.split(' | ') 

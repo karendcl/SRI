@@ -1,4 +1,4 @@
-from process_docs import processed_docs
+from process_docs import processed_docs, processed_query
 from fuzzy import FuzzyModel
 from boolean_Model import BooleanModel
 from tfIdf_Matrix import Matrix_TFIDF
@@ -11,7 +11,7 @@ class Document:
         self.author = author
 
 def search(query, model, documents):
-    query = query.lower()
+    query = processed_query(query)
 
     try:
         with open('tokenized_docs.pkl', 'rb') as f:

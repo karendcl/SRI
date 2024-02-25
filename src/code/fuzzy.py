@@ -27,8 +27,8 @@ def Similitud_MMM(query_ind, matrix_tfidf, doc_ind: int):
     co1 = 0.2
     co2 = 0.7
 
-    cy1 = 0.8
-    cy2 = 0.2
+    cy1 = 0.2
+    cy2 = 0.7
 
     min = inf
     max = -inf
@@ -51,11 +51,7 @@ def FuzzyModel(query, documents, metrics):
     query = [word for word in query if word in vectorizer.vocabulary_]
     indices = indices_of_words_from_query(query, vectorizer)
 
-    print("Empecé similitud")
     scores = [Similitud_MMM(indices, matrix_tfidf, i) for i in range(len(documents))]
-    print("terminé similitud")
-
-    print('got scores')
 
     mean_score_doc = [sum(score) / len(score) for score in scores]
 
@@ -63,5 +59,4 @@ def FuzzyModel(query, documents, metrics):
     ordered =  sorted(range(len(mean_score_doc)), key=lambda k: mean_score_doc[k], reverse=True)
 
     #return the indices of docs that have a score greater than 0
-    return [i for i in ordered if mean_score_doc[i] > 0]
-
+    return [i for i in ordered if mean_score_doc[i] > 0.1]
