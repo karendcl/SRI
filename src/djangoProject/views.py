@@ -23,6 +23,11 @@ def main(request):
     return render(request, 'main.html')
 
 def about(request):
+    '''
+    This function is used to display the documents in the database
+
+
+    '''
 
     docs = Documents.objects.all()
 
@@ -35,6 +40,13 @@ def about(request):
 
 
 def search(request, first = None):
+    '''
+    This function is used to search for documents in the database
+
+    Params:
+    request: HttpRequest object
+    first: boolean, if true, the function will display all the documents in the database
+    '''
     if request.method =='POST':
         search = request.POST['search']
         model = request.POST['model']
@@ -72,6 +84,15 @@ def search(request, first = None):
 
 
 def recommendation(request):
+    '''
+    This function is used to display the recommendations for the documents in the session
+
+    Params:
+    request: HttpRequest object
+
+    Returns:
+    render: HttpResponse object
+    '''
     #try to retrieve the docs from the session
     try:
         docs = request.session['docs']
