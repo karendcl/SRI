@@ -1,0 +1,7 @@
+Django==5.0.1
+gensim==4.3.2
+ir_datasets==0.5.6
+nltk==3.8.1
+scikit_learn==1.4.0
+spacy==3.7.2
+sympy==1.12
