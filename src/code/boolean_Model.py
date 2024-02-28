@@ -2,15 +2,15 @@ import sympy
 
 def query_to_dnf(query): 
 
-    operators = ['&', '|', '~','(',')'] 
+    operators = ['&', '|', '~','(',')']
+    reserved_Words = ["pass", "use", "field", "harmonic", "maximum", "print", "input"]
      
     #add spaces between the brackets 
     query = query.replace('(', ' ( ').replace(')', ' ) ') 
      
     processed_query = query.replace(" and ", "&").replace(" or ", "|").replace(" not ", "~") 
     tokenized = processed_query.split()
-    tokenized = [token for token in tokenized if token != "pass" and token != "use" and token != "field"
-                 and token != "harmonic" and token != "maximum" and token != "print" and token != "input"]
+    tokenized = [token for token in tokenized if token not in reserved_Words]
     
 
     #stay with alphanumeric characters 
