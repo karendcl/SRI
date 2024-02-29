@@ -3,13 +3,15 @@ from fuzzy import FuzzyModel
 from boolean_Model import BooleanModel
 import pickle
 
-class Document:
-    def __init__(self, name, content, author):
-        self.name = name
-        self.content = content
-        self.author = author
 
 def search(query, model, documents):
+    '''
+    This function is used to search for documents in the database that are related to a query
+    :param query: string, the query
+    :param model: string, the model to use for the search (fuzzy or boolean)
+    :param documents: list of strings, the documents to search in
+    :return: list of integers, the indexes of the documents that satisfy the query
+    '''
     query = processed_query(query)
 
     try:

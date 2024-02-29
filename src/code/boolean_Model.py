@@ -1,6 +1,15 @@
 import sympy
 
-def query_to_dnf(query): 
+def query_to_dnf(query):
+    '''
+    This function is used to convert a boolean query to a disjunctive normal form (DNF)
+
+    Args:
+    query: string, the boolean query
+
+    Returns:
+    query_dnf: string, the boolean query in DNF
+    '''
 
     operators = ['&', '|', '~','(',')']
     reserved_Words = ["pass", "use", "field", "harmonic", "maximum", "print", "input"]
@@ -32,7 +41,18 @@ def query_to_dnf(query):
     return query_dnf 
 
 
-def BooleanModel(query, documents, dictionary):  
+def BooleanModel(query, documents, dictionary):
+    '''
+    This function is used to search for documents that satisfy a boolean query
+
+    Args:
+    query: string, the boolean query
+    documents: list of strings, the documents to search in
+    dictionary: gensim.corpora.Dictionary, the dictionary of the documents
+
+    Returns:
+    matching_documents: list of integers, the indexes of the documents that satisfy the query
+    '''
  
     query_dnf = query_to_dnf(query)
     if query_dnf == "error":
@@ -67,6 +87,5 @@ def BooleanModel(query, documents, dictionary):
               break 
         if clause_matched is True: 
           matching_documents.append(k) 
-          break 
- 
+          break
     return matching_documents

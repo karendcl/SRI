@@ -6,6 +6,12 @@ from fuzzy import FuzzyModel
 
 
 def my_relevant_documents(query_id):
+    '''
+    This function returns the relevant documents for a given query
+
+    :param query_id: int, the identifier of the query
+    :return: list of strings, the identifiers of the relevant documents
+    '''
     documents = []
     for qrel in Qrels:
         if query_id == qrel.query_id:
@@ -14,6 +20,12 @@ def my_relevant_documents(query_id):
     return documents
 
 def index_to_id(IntList):
+    '''
+    This function returns the identifiers of the documents given their indexes
+
+    :param IntList: list of integers, the indexes of the documents
+    :return: list of strings, the identifiers of the documents
+    '''
     id_List = []
     for i in IntList:
         id_List.append(Docs[i].doc_id)
@@ -22,6 +34,12 @@ def index_to_id(IntList):
 
 
 def Tp(recovered_documents, relevant_documents):
+    '''
+    Calculate the measure (True Positives)
+    :param recovered_documents: (list): Set of documents recovered by the SRI. Each document is defined by its identifier.
+    :param relevant_documents: (list): Set of documents relevant to the query. Each document is defined by its identifier.
+    :return: the number of true positives
+    '''
     temp = 0
     for v in relevant_documents:
         if v in recovered_documents:
@@ -30,6 +48,12 @@ def Tp(recovered_documents, relevant_documents):
 
 
 def Fp(recovered_documents, relevant_documents):
+    '''
+    Calculate the measure (False Positives)
+    :param recovered_documents: (list): Set of documents recovered by the SRI. Each document is defined by its identifier.
+    :param relevant_documents: (list): Set of documents relevant to the query. Each document is defined by its identifier.
+    :return: the number of false positives
+    '''
     temp = 0
     for v in recovered_documents:
         if v not in relevant_documents:
@@ -38,6 +62,12 @@ def Fp(recovered_documents, relevant_documents):
 
 
 def Fn(recovered_documents, relevant_documents):
+    '''
+    Calculate the measure (False Negatives)
+    :param recovered_documents: (list): Set of documents recovered by the SRI. Each document is defined by its identifier.
+    :param relevant_documents: (list): Set of documents relevant to the query. Each document is defined by its identifier.
+    :return: the number of false negatives
+    '''
     temp = 0
     for v in relevant_documents:
         if v not in recovered_documents:
@@ -46,6 +76,12 @@ def Fn(recovered_documents, relevant_documents):
 
 
 def Tn(recovered_documents, relevant_documents):
+    '''
+    Calculate the measure (True Negatives)
+    :param recovered_documents: (list): Set of documents recovered by the SRI. Each document is defined by its identifier.
+    :param relevant_documents: (list): Set of documents relevant to the query. Each document is defined by its identifier.
+    :return: the number of true negatives
+    '''
     temp = 0
     for v in Docs:
         if v.doc_id not in recovered_documents and v not in relevant_documents:
@@ -174,6 +210,11 @@ def r_accuracy(recovered_documents, relevant_documents, r):
 
 
 def calculate_measures(model):
+    '''
+    This function calculates the measures for a given model
+    :param model : (string) the name of the model to use
+    :return: (tuple) the measures results {accuracy, recall, fb, f1, fallout, r_accuracy}
+    '''
     accuracys = []
     recalls = []
     fbs = []

@@ -1,6 +1,12 @@
 from Document.models import Documents
 
 def get_recommendations(results_ind):
+    '''
+    This function is used to get recommendations based on the results of a search.
+    The recommendations are based on the authors and genres of the documents in the results.
+    :param results_ind: list of integers, the indices of the documents in the results
+    :return: list of integers (the indices of the recommended documents), list of strings (the authors of the recommended documents), list of strings (the genres of the recommended documents)
+    '''
 
     all_docs = Documents.objects.all()
     authors = dict()
