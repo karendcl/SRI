@@ -55,14 +55,15 @@ In order to give a score to a document based on a query, we use the Paice model.
 ## Insufficiencies
 
 
+
 ## Results
 We hereby present the results of the metrics implemented inorder to evaluate the performance of the models.
 - r-accuracy (r=15): This metric is the accuracy of the first r documents retrieved by the model. It is used to measure the relevance of the documents retrieved by the model.
 - recall: This metric is the proportion of relevant documents that are retrieved by the model. It is used to measure the effectiveness of the model in retrieving relevant documents.
 - fall-out: This metric is the proportion of irrelevant documents that are retrieved by the model. It is used to measure the effectiveness of the model in not retrieving irrelevant documents.
-- fb (b=3): Esta metrica es un indicador de la efectividad del modelo teniendo en cuenta accuracy y recall, con b=3 se le da más importancia al recall
+- fb (b=3): This metric is an indicator of the effectiveness of the model, taking into consideration the accuracy and recall. Setting b=3, the recall is given more importance.
 
-**Resultados de las métricas para ambos modelos:**
+** Results for both models:**
 
 Metric | Boolean Model | Fuzzy Boolean Model
 ---    |---            |---
@@ -71,11 +72,11 @@ recall | 0.003 | 0.91
 fall-out | 0.0 | 0.17
 f3 | 0.007 | 0.5
 
->Se pueden comprobar los resultados en el archivo metrics.py de la carpeta code. Dichos resultados son el promedio de cada métrica para todas las querys del dataset.
+> These results can be checked by running the metrics.py file from the 'code' folder. The results shown are the individual results per query averaged.
 
-Como se puede observar el modelo fuzzy es mucho más efectivo que el booleano, pero aun asi tiene una carencia en la precicion. El modelo siempre recupera mucha información, como se puede ver por el recall, la información relevante es recuperada en su mayoría, pero un valor tan bajo de precisión indica que tambien fue recuperada mucha información irrelevante. Aun asi, dicho por ciento de información irrelevante recuperada sigue siendo bajo comparado con el total de información irrelevante que hay en el dataset, como indica el fall-out.
+As we can see, the fuzzy model is much more effective than the boolean, but it still lacks in accuracy. The model always retrieves too much information; as can be seen in the recall,most of the relevant information is retrieved, but the low level in accuracy also shows that a lot of irrelevant information was retrieved. Even so, said percentage of irrelevant information retrieved is still low compared to the total irrelevant documents in the dataset, as can be seen in the fall-out.
 
-Destacar que los bajos resultados del modelo booleano se deben a que las querys del dataset son relativamente largas y al modelo le cuesta encontrar documentos que contengan todos los elementos de la query, por lo que para la mayoria de querys del dataset el modelo no recuperó información alguna. Aun asi, en otra situación las métricas de dicho modelo hubieran sido un poco mejores, pero no superiores a las del modelo fuzzy
+It is important to say that the poor results of the boolean model are because the natural language queries from the dataset are relatively long and the model is unable to find a document that contains every single word, which means that for most queries from the dataset, the model did not retrieve any documents. Having said that, in other circumstances, the metrics from the boolean model would have been slightly better,but not superior to the fuzzy model.
 
 
 ## Document Recommendation
