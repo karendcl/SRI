@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#pkl files
+dictionary.pkl
+dictionary_for_metrics.pkl
+tokenized_docs.pkl
+tokenized_docs_for_metrics.pkl
+
 # C extensions
 *.so
 

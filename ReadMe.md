@@ -32,7 +32,7 @@ Our queries are accepted in natural language. The user can input a query in the 
 As we have previously mentioned, we have implemented a boolean model with fuzzy logic
 
 #### Boolean Model with fuzzy logic
-The second model implemented is an extension of the boolean model, which uses fuzzy logic to retrieve documents that contain a set of words.
+This model is an extension of the boolean model, which uses fuzzy logic to retrieve documents that contain a set of words.
 The fuzzy logic on a boolean model is based on the premise that a document can contain a word with a certain degree of membership, whereas in the pure
 boolean model, a document either contains a word or not.
 In this implementation, we use the TF-IDF values to calculate the degree of membership of a word in a document.
@@ -57,11 +57,25 @@ In order to give a score to a document based on a query, we use the Paice model.
 
 ## Results
 We hereby present the results of the metrics implemented inorder to evaluate the performance of the models.
-- r-precision: This metric is the precision of the first r documents retrieved by the model. It is used to measure the relevance of the documents retrieved by the model.
+- r-accuracy (r=15): This metric is the accuracy of the first r documents retrieved by the model. It is used to measure the relevance of the documents retrieved by the model.
 - recall: This metric is the proportion of relevant documents that are retrieved by the model. It is used to measure the effectiveness of the model in retrieving relevant documents.
 - fall-out: This metric is the proportion of irrelevant documents that are retrieved by the model. It is used to measure the effectiveness of the model in not retrieving irrelevant documents.
-- fallback: This metric is the proportion of relevant documents that are not retrieved by the model. It is used to measure the effectiveness of the model in retrieving relevant documents.
+- fb (b=3): Esta metrica es un indicador de la efectividad del modelo teniendo en cuenta accuracy y recall, con b=3 se le da más importancia al recall
 
+**Resultados de las métricas para ambos modelos:**
+
+Metric | Boolean Model | Fuzzy Boolean Model
+---    |---            |---
+r-accuracy | 0.04 | 0.18
+recall | 0.003 | 0.91
+fall-out | 0.0 | 0.17
+f3 | 0.007 | 0.5
+
+>Se pueden comprobar los resultados en el archivo metrics.py de la carpeta code. Dichos resultados son el promedio de cada métrica para todas las querys del dataset.
+
+Como se puede observar el modelo fuzzy es mucho más efectivo que el booleano, pero aun asi tiene una carencia en la precicion. El modelo siempre recupera mucha información, como se puede ver por el recall, la información relevante es recuperada en su mayoría, pero un valor tan bajo de precisión indica que tambien fue recuperada mucha información irrelevante. Aun asi, dicho por ciento de información irrelevante recuperada sigue siendo bajo comparado con el total de información irrelevante que hay en el dataset, como indica el fall-out.
+
+Destacar que los bajos resultados del modelo booleano se deben a que las querys del dataset son relativamente largas y al modelo le cuesta encontrar documentos que contengan todos los elementos de la query, por lo que para la mayoria de querys del dataset el modelo no recuperó información alguna. Aun asi, en otra situación las métricas de dicho modelo hubieran sido un poco mejores, pero no superiores a las del modelo fuzzy
 
 
 ## Document Recommendation
@@ -71,13 +85,3 @@ This system is based on recommending the books that are most similar to the ones
 This degree of similarity is based on a scoring system that takes into consideration the most relevant authors and genres of the search results.
 
 The recommendations are from the documents in the corpus that were not recommended.
-
-
-
-
-
-
- 
-
-
-
