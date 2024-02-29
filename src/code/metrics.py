@@ -198,7 +198,7 @@ def calculate_measures(model):
         current_fb = fb(recovered_documents, relevant_documents, 3)
         current_f1 = f1(recovered_documents, relevant_documents)
         current_fallout = fallout(recovered_documents, relevant_documents)
-        current_r_accuracy = r_accuracy(recovered_documents, relevant_documents, 30)
+        current_r_accuracy = r_accuracy(recovered_documents, relevant_documents, 15)
 
         accuracys.append(current_accuracy)
         recalls.append(current_recall)

@@ -3,7 +3,7 @@ import sympy
 def query_to_dnf(query): 
 
     operators = ['&', '|', '~','(',')']
-    reserved_Words = ["pass", "use", "field", "harmonic", "maximum", "print", "input"]
+    reserved_Words = ["pass", "use", "field", "harmonic", "maximum", "print", "input", "variations"]
      
     #add spaces between the brackets 
     query = query.replace('(', ' ( ').replace(')', ' ) ') 
