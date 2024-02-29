@@ -7,10 +7,14 @@ import pickle
 def search(query, model, documents):
     '''
     This function is used to search for documents in the database that are related to a query
-    :param query: string, the query
-    :param model: string, the model to use for the search (fuzzy or boolean)
-    :param documents: list of strings, the documents to search in
-    :return: list of integers, the indexes of the documents that satisfy the query
+
+    Args:
+        - query: string, the query
+        - model: string, the model to use for the search (fuzzy or boolean)
+        - documents: list of strings, the documents to search in
+
+    Returns
+        - list of integers, the indices of the documents that satisfy the query
     '''
     query = processed_query(query)
 

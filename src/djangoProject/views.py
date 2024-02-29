@@ -26,7 +26,11 @@ def about(request):
     '''
     This function is used to display the documents in the database
 
+    Args:
+        - request: HttpRequest object
 
+    Returns:
+        - render: HttpResponse object
     '''
 
     docs = Documents.objects.all()
@@ -43,9 +47,12 @@ def search(request, first = None):
     '''
     This function is used to search for documents in the database
 
-    Params:
-    request: HttpRequest object
-    first: boolean, if true, the function will display all the documents in the database
+    Args:
+        - request: HttpRequest object
+        - first: boolean, if true, the function will display all the documents in the database
+
+    Returns:
+        - render: HttpResponse object
     '''
     if request.method =='POST':
         search = request.POST['search']
@@ -68,8 +75,6 @@ def search(request, first = None):
             docs = request.session['docs']
             docs = [i for i in docs]
 
-
-
         docs = Documents.objects.filter(id__in=docs)
 
     #truncate the description
@@ -87,11 +92,11 @@ def recommendation(request):
     '''
     This function is used to display the recommendations for the documents in the session
 
-    Params:
-    request: HttpRequest object
+    Args:
+        - request: HttpRequest object
 
     Returns:
-    render: HttpResponse object
+        - render: HttpResponse object
     '''
     #try to retrieve the docs from the session
     try:
@@ -109,10 +114,3 @@ def recommendation(request):
     page = request.GET.get('page')
     page_obj = paginator.get_page(page)
     return render(request, "recommendation.html", {"page_obj": page_obj, "authors": authors, "genres": genres})
-
-
-
-
-
-
-

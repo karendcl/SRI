@@ -5,8 +5,12 @@ import gensim
 def tokenization_spacy(texts):
     '''
     This function is used to tokenize a list of documents using spacy
-    :param texts: list of strings, the documents to tokenize
-    :return: list of lists of strings, the tokenized documents
+
+    Args:
+        - texts: list of strings, the documents to tokenize
+
+    Returns
+        - list of lists of strings, the tokenized documents
     '''
     nlp = spacy.load("en_core_web_sm", enable=["lemmatizer"])
     return [[token for token in nlp(doc)] for doc in texts]
@@ -15,8 +19,12 @@ def tokenization_spacy(texts):
 def remove_noise_spacy(tokenized_docs):
     '''
     This function is used to remove non-alphabetic tokens from a list of tokenized documents
-    :param tokenized_docs: list of lists of strings, the tokenized documents
-    :return: list of lists of strings, the tokenized documents without non-alphabetic tokens
+
+    Args
+        - tokenized_docs: list of lists of strings, the tokenized documents
+
+    Returns
+        - list of lists of strings, the tokenized documents without non-alphabetic tokens
     '''
     return [[token for token in doc if token.is_alpha] for doc in tokenized_docs]
 
@@ -24,8 +32,12 @@ def remove_noise_spacy(tokenized_docs):
 def remove_stopwords_spacy(tokenized_docs):
     '''
     This function is used to remove stopwords from a list of tokenized documents
-    :param tokenized_docs: list of lists of strings, the tokenized documents
-    :return: list of lists of strings, the tokenized documents without stopwords
+
+    Args:
+        - tokenized_docs: list of lists of strings, the tokenized documents
+
+    Returns:
+        - list of lists of strings, the tokenized documents without stopwords
     '''
     stopwords = spacy.lang.en.stop_words.STOP_WORDS
     return [
@@ -35,9 +47,13 @@ def remove_stopwords_spacy(tokenized_docs):
 def morphological_reduction_spacy(tokenized_docs, use_lemmatization=True):
     '''
     This function is used to reduce the words in a list of tokenized documents to their root form
-    :param tokenized_docs: list of lists of strings, the tokenized documents
-    :param use_lemmatization: boolean, if true, lemmatization is used, else stemming is used
-    :return: list of lists of strings, the tokenized documents with the words reduced to their root form
+
+    Args
+        - tokenized_docs: list of lists of strings, the tokenized documents
+        - use_lemmatization: boolean, if true, lemmatization is used, else stemming is used
+
+    Returns:
+        - list of lists of strings, the tokenized documents with the words reduced to their root form
     '''
     stemmer = nltk.stem.PorterStemmer()
     return [
@@ -48,9 +64,13 @@ def morphological_reduction_spacy(tokenized_docs, use_lemmatization=True):
 def processed_docs(Corpus):
     '''
     This function is used to process a list of documents
-    :param Corpus: list of strings, the documents to process
 
-    :return: list of lists of strings, gensim.corpora.Dictionary (the processed documents and the dictionary of the documents)
+    Args:
+        - Corpus: list of strings, the documents to process
+
+    Returns:
+        - list of lists of strings, the processed documents
+        - gensim.corpora.Dictionary, the dictionary of the documents
 
     '''
     #Load corpus
@@ -71,8 +91,12 @@ def processed_docs(Corpus):
 def processed_query(query):
     '''
     This function is used to process a query
-    :param query: string, the query to process
-    :return: string, the processed query
+
+    Args:
+        - query: string, the query to process
+
+    Returns
+        - string, the processed query
     '''
     query = query.lower()
     Query = []
