@@ -5,10 +5,10 @@ def query_to_dnf(query):
     This function is used to convert a boolean query to a disjunctive normal form (DNF)
 
     Args:
-    query: string, the boolean query
+      - query: string, the boolean query
 
     Returns:
-    query_dnf: string, the boolean query in DNF
+      - string, the boolean query in DNF
     '''
 
     operators = ['&', '|', '~','(',')']
@@ -31,7 +31,6 @@ def query_to_dnf(query):
      
     processed_query = ' '.join(tokenized) 
      
-    # Convertir a expresión sympy y aplicar to_dnf 
     if processed_query == "":
        return "error"
     
@@ -46,12 +45,12 @@ def BooleanModel(query, documents, dictionary):
     This function is used to search for documents that satisfy a boolean query
 
     Args:
-    query: string, the boolean query
-    documents: list of strings, the documents to search in
-    dictionary: gensim.corpora.Dictionary, the dictionary of the documents
+      - query: string, the boolean query
+      - documents: list of strings, the documents to search in
+      - dictionary: gensim.corpora.Dictionary, the dictionary of the documents
 
     Returns:
-    matching_documents: list of integers, the indexes of the documents that satisfy the query
+      - list of integers, the indices of the documents that satisfy the query
     '''
  
     query_dnf = query_to_dnf(query)
@@ -61,7 +60,6 @@ def BooleanModel(query, documents, dictionary):
     Query = str(query_dnf) 
     terms = Query.split(' | ') 
  
-    # Función para verificar si un documento satisface una componente conjuntiva de la consulta 
     matching_documents = [] 
  
     for k, doc in enumerate(documents): 
