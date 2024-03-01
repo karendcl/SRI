@@ -85,11 +85,14 @@ def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
                     neg = True
                     i = i[1:]
                 if i not in vectorizer.vocabulary_:
-                    clause_matched = True if neg else False
+                    if not neg:
+                        clause_matched = False
+                        and_scores.append(0)
+
                     continue
                 i = vectorizer.vocabulary_[i]
                 if neg:
-                    and_scores.append(1 - matrix_tfidf[doc_ind, i])
+                    and_scores.append(matrix_tfidf[doc_ind, i]*(-1))
                     clause_matched = False
                 else:
                     and_scores.append(matrix_tfidf[doc_ind, i])
@@ -97,9 +100,9 @@ def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
             if clause_matched is True:
                 return 1
             else:
-                or_scores.append(min(and_scores))
+                or_scores.append(cor1*max(and_scores) + cor2*min(and_scores))
 
-    return max(or_scores)
+    return cand1*max(or_scores) + cand2*min(or_scores)
 
 
 
@@ -127,7 +130,6 @@ def FuzzyModel(query, documents):
 
     Matrix_TFIDF(documents)
     query = str(query_dnf)
-
     scores = [Paice_Similarity(query, matrix_tfidf, i) for i in range(len(documents)]]
     # scores = [Paice_Similarity(indices, matrix_tfidf, i) for i in range(len(documents))]
 
