@@ -88,14 +88,17 @@ def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
                     if not neg:
                         clause_matched = False
                         and_scores.append(0)
-
                     continue
                 i = vectorizer.vocabulary_[i]
-                if neg:
-                    and_scores.append(matrix_tfidf[doc_ind, i]*(-1))
-                    clause_matched = False
+                score = matrix_tfidf[doc_ind, i]
+                if score == 0:
+                    if not neg:
+                        clause_matched = False
+                        and_scores.append(0)
                 else:
-                    and_scores.append(matrix_tfidf[doc_ind, i])
+                    if neg:
+                        score = score * -1
+                    and_scores.append(score)
 
             if clause_matched is True:
                 return 1
