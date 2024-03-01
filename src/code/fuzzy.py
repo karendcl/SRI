@@ -122,7 +122,6 @@ def FuzzyModel(query, documents):
         - list of integers, the indexes of the documents that satisfy the query
 
     '''
-
     # query = query.split()
     # query = [word for word in query if word in vectorizer.vocabulary_]
     # indices = indices_of_words_from_query(query, vectorizer)
@@ -133,7 +132,7 @@ def FuzzyModel(query, documents):
 
     Matrix_TFIDF(documents)
     query = str(query_dnf)
-    scores = [Paice_Similarity(query, matrix_tfidf, i) for i in range(len(documents)]]
+    scores = [Paice_Similarity(query, matrix_tfidf, i) for i in range(len(documents))]
     # scores = [Paice_Similarity(indices, matrix_tfidf, i) for i in range(len(documents))]
 
     #order the documents by the mean score and return the index of the documents

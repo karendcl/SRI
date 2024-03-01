@@ -12,12 +12,12 @@ def query_to_dnf(query):
     '''
 
     operators = ['&', '|', '~','(',')']
-    reserved_Words = ["pass", "use", "field", "harmonic", "maximum", "print", "input", "variations"]
+    reserved_Words = ["pass", "use", "field", "harmonic", "maximum", "print", "input", "variations", "pretty", "test"]
      
     #add spaces between the brackets 
     query = query.replace('(', ' ( ').replace(')', ' ) ') 
      
-    processed_query = query.replace(" and ", "&").replace(" or ", "|").replace(" not ", "~") 
+    processed_query = query.replace(" not ", " ~ ").replace(" and ", " & ").replace(" or ", " | ") 
     tokenized = processed_query.split()
     tokenized = [token for token in tokenized if token not in reserved_Words]
     
@@ -26,7 +26,7 @@ def query_to_dnf(query):
     tokenized = [word for word in tokenized if word.isdigit() is False or word in operators] 
      
     for i in range(len(tokenized) -1): 
-        if tokenized[i] not in operators and tokenized[i+1] not in operators: 
+        if tokenized[i] not in operators and (tokenized[i+1] not in operators or tokenized[i+1] == '~'): 
             tokenized[i] = tokenized[i] + ' &' 
      
     processed_query = ' '.join(tokenized) 
@@ -36,7 +36,7 @@ def query_to_dnf(query):
     
     query_expr = sympy.sympify(processed_query, evaluate=False) 
     query_dnf = sympy.to_dnf(query_expr, simplify=True, force = True) 
- 
+    
     return query_dnf 
 
 

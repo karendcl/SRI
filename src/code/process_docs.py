@@ -29,7 +29,7 @@ def remove_noise_spacy(tokenized_docs):
     return [[token for token in doc if token.is_alpha] for doc in tokenized_docs]
 
 
-def remove_stopwords_spacy(tokenized_docs):
+def remove_stopwords_spacy(tokenized_docs, query=False):
     '''
     This function is used to remove stopwords from a list of tokenized documents
 
@@ -40,8 +40,12 @@ def remove_stopwords_spacy(tokenized_docs):
         - list of lists of strings, the tokenized documents without stopwords
     '''
     stopwords = spacy.lang.en.stop_words.STOP_WORDS
-    return [
-    [token for token in doc if token.text not in stopwords] for doc in tokenized_docs]
+    if query:
+        return [
+        [token for token in doc if token.text in ["and","or","not"] or token.text not in stopwords] for doc in tokenized_docs]
+    else:
+        return [
+        [token for token in doc if token.text not in stopwords] for doc in tokenized_docs]
 
 
 def morphological_reduction_spacy(tokenized_docs, use_lemmatization=True):
@@ -102,6 +106,6 @@ def processed_query(query):
     Query = []
     Query.append(query)
 
-    processed_Query = morphological_reduction_spacy(remove_stopwords_spacy(remove_noise_spacy(tokenization_spacy(Query))), True)
+    processed_Query = morphological_reduction_spacy(remove_stopwords_spacy(remove_noise_spacy(tokenization_spacy(Query)), True), True)
 
-    return ' '.join(processed_Query[0])
+    return " " + ' '.join(processed_Query[0])
