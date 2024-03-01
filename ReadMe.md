@@ -107,3 +107,11 @@ This system is based on recommending the books that are most similar to the ones
 This degree of similarity is based on a scoring system that takes into consideration the most relevant authors and genres of the search results.
 
 The recommendations are from the documents in the corpus that were not recommended.
+
+## Images
+> ## Main Page + Results Page
+> ![image](https://i.postimg.cc/LXkCkXX4/photo-5121144838987819819-y.jpg)
+
+> ## Recommendations Page
+> ![image](https://i.postimg.cc/qvMtXMJJ/photo-5120976085427792776-y.jpg)
+> ![image](https://i.postimg.cc/Ghj8ys1g/photo-5120976085427792775-y.jpg)
