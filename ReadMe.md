@@ -20,9 +20,9 @@ boolean model, a document either contains a word or not.
 This means that the fuzzy logic gives the boolean model a sense of 'softness'.
 
 ## Considerations taken into account
- - Se utilizaron 2 datasets, el datadet (insertar nombre) para la aplicacion y el dataset 'vaswani' para la evaluacion de los modelo. El dataset (insertar nombre) es un dataset de (descripción) el cual contiene metadatos que nos facilitaban crear una interfaf visual atractiva, y la implementación de un sistema de recomendacion que se explicará mas adelante. Por otro lado era necesario un dataset con querys y qrels predefinidas para la evaluacion de los modelos, para lo cual se eligio el dataset 'vaswani', de ir-dataset. Este dataset contiene alrededor de 11 resumenes sobre articulos sobre física y 93 querys predefinidas en lenguaje natural. Una ventaja de usar este dataset es la composicion de sus qrels, los cuales solo contienen para cada query los documentos relevantes, en vez de asignar un nivel de relevancia distinto a cada documento del dataset.
-
- - El preprocesamiento del corpus se hizo con la biblioteca spacy debido a la eficiencia de esta. como se puede comprobar, el preprocesamiento del corpus utilizado para la interfaz visual tarda no mas de 30 segundos. El preprocesamiento incluye: Tokenizacion, reduccion de ruido, quitar las stopwords y la reducciom morfológica utilizando la lematizacion. Este preprocesamiento tambien es aplicado a las querys del usuario.
+ - Two different datasets were used, the 'Goodreads' dataset for the app and the 'vaswani' dataset for the evaluation of the models. The 'Goodreads' dataset is a dataset of books that contains metadata that facilitated the creation of an attractive visual interface, and the implementation of a recommendation system that will be explained later. On the other hand, it was necessary to use a dataset with predefined queries and qrels for the evaluation of the models, for which the 'vaswani' dataset from ir-dataset was chosen. This dataset contains around 11k summaries of articles on physics and 93 predefined queries in natural language. An advantage of using this dataset is the composition of its qrels, which only contain the relevant documents for each query, instead of assigning a different level of relevance to each document in the dataset.
+ - The preprocessing of the corpus was done with the spacy library due to its efficiency. As can be seen, the preprocessing of the corpus used for the visual interface takes no more than 30 seconds. The preprocessing includes: Tokenization, noise reduction, removing stopwords, and morphological reduction using lemmatization. This preprocessing is also applied to the user's queries.
+ 
 
 ## How to run 
 You can simply execute the `startup.sh` script to run the program. This script will install the required dependencies and run the program.
@@ -45,22 +45,38 @@ In this implementation, we use the TF-IDF values to calculate the degree of memb
 > The term frequency is the number of times a word appears in a document, and the inverse document frequency is the logarithm of the total number of documents divided by the number of documents that contain the word.
 
 
-In order to give a score to a document based on a query, we use the Paice model.
+In order to determine whether a document is relevant to a query, we use the MMM(Mixed Min-Max) model.
 
-> #### Paice Model
-> The Paice model is a scoring system that takes into consideration all the weights of the words from the query in the document.
-> The score is calculated by summing the weights of the words in the query that are present in the document.
-> Because we are using the TF-IDF values to calculate the weights of the words, the score is a measure of the relevance of the document to the query.
+> #### MMM Model
+> As we have said before, in fuzzy-set theory, a word has a degree of membership in a document as opposed to the boolean model, where a word either belongs to a document or not.
+> In MMM, each index term has a fuzzy set associated with it. 
+> A document's weight with respect to an index term is considered to be the degree of membership of the document in the fuzzy set.
+> More specifically, the MMM model uses the minimum and maximum degree of membership of a document in the fuzzy set of the index terms to determine the relevance of the document to the query.
+> The MMM model is calculated as follows:
+> - $$ d_{A \cap B} = min(d_A, d_B) $$
+> - $$ d_{A \cup B} = max(d_A, d_B) $$
+> - $$ d_{ \neg A} = -d_A $$
 > 
-> We have chosen to implement the Paice model because of its simplicity and its effectiveness in scoring documents based on a query.
+> This means that the degree of membership of a document in the intersection of two index terms is the minimum of the degrees of membership of the document in the two index terms, and the degree of membership of a document in the union of two index terms is the maximum of the degrees of membership of the document in the two index terms.
+> Hence, we can consider the $$ \cap $$ as an AND operator and the $$ \cup $$ as an OR operator.
+> The negation of the degree of membership of a document in an index term is the opposite of the degree of membership of the document in the index term.
+> 
+> The MMM model tries to soften the Boolean operators by considering the query-document similarity to be a linear combination of the min and max weights.
+> - $$ SIM (d, q_{or}) = c_{or1} \cdot max_{i=1}^{n} d_{i} + c_{or2} \cdot min_{i=1}^{n} d_{i} $$
+> - $$ SIM (d, q_{and}) = c_{and1} \cdot max_{i=1}^{n} d_{i} + c_{and2} \cdot min_{i=1}^{n} d_{i} $$
+> 
+> Where $$ c_{or1} $$, $$ c_{or2} $$, $$ c_{and1} $$, and $$ c_{and2} $$ are constants that are used to adjust the weights of the min and max operators.
+> 
+> In our implementation, we take advantage of transforming our query to DNF (Disjunctive Normal Form) to calculate the weights of the min and max operators.
 
 
 ## Insufficiencies
- - Como se verá y explicará a continuación el modelo implementado tiene muy bajos resultados de precisión.
+ - The model implemented has very low accuracy results. 
+ - The model does not compute the degree of relevance of the documents
+retrieved, so it is not possible to order the documents by relevance. It only
+determines if it is relevant or not.
 
-  - (Falta confirmación) El modelo no ordena los resultados obtenidos por lo que no hay un criterio de relevancia en la información recuperada
-
-
+  
 ## Results
 We hereby present the results of the metrics implemented inorder to evaluate the performance of the models.
 - accuracy: This metric is the proportion of relevant documents compared to irrelevant documents that are retrieved by the model. It is used to measure the relevance of the documents retrieved by the model.
