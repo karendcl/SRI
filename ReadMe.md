@@ -22,8 +22,6 @@ This means that the fuzzy logic gives the boolean model a sense of 'softness'.
 ## Considerations taken into account
  - Se utilizaron 2 datasets, el datadet (insertar nombre) para la aplicacion y el dataset 'vaswani' para la evaluacion de los modelo. El dataset (insertar nombre) es un dataset de (descripción) el cual contiene metadatos que nos facilitaban crear una interfaf visual atractiva, y la implementación de un sistema de recomendacion que se explicará mas adelante. Por otro lado era necesario un dataset con querys y qrels predefinidas para la evaluacion de los modelos, para lo cual se eligio el dataset 'vaswani', de ir-dataset. Este dataset contiene alrededor de 11 resumenes sobre articulos sobre física y 93 querys predefinidas en lenguaje natural. Una ventaja de usar este dataset es la composicion de sus qrels, los cuales solo contienen para cada query los documentos relevantes, en vez de asignar un nivel de relevancia distinto a cada documento del dataset.
 
- - A la hora de elegir las métricas se eligio la r-precision por encima de la precision ya que el modelo implementado devuelve los resultados en orden de prioridad, por lo que tiene mas sentido analizar los primeros r documentos elegidos por este. Elegimos r=15 pues es el equivalente a las primeras 5 páginas de resultados en la interfaz visual, es poco probable que el usuario busque resultados mas allá de estos.
-
  - El preprocesamiento del corpus se hizo con la biblioteca spacy debido a la eficiencia de esta. como se puede comprobar, el preprocesamiento del corpus utilizado para la interfaz visual tarda no mas de 30 segundos. El preprocesamiento incluye: Tokenizacion, reduccion de ruido, quitar las stopwords y la reducciom morfológica utilizando la lematizacion. Este preprocesamiento tambien es aplicado a las querys del usuario.
 
 ## How to run 
@@ -58,12 +56,14 @@ In order to give a score to a document based on a query, we use the Paice model.
 
 
 ## Insufficiencies
+ - Como se verá y explicará a continuación el modelo implementado tiene muy bajos resultados de precisión.
 
+  - (Falta confirmación) El modelo no ordena los resultados obtenidos por lo que no hay un criterio de relevancia en la información recuperada
 
 
 ## Results
 We hereby present the results of the metrics implemented inorder to evaluate the performance of the models.
-- r-accuracy (r=15): This metric is the accuracy of the first r documents retrieved by the model. It is used to measure the relevance of the documents retrieved by the model.
+- accuracy: This metric is the proportion of relevant documents compared to irrelevant documents that are retrieved by the model. It is used to measure the relevance of the documents retrieved by the model.
 - recall: This metric is the proportion of relevant documents that are retrieved by the model. It is used to measure the effectiveness of the model in retrieving relevant documents.
 - fall-out: This metric is the proportion of irrelevant documents that are retrieved by the model. It is used to measure the effectiveness of the model in not retrieving irrelevant documents.
 - fb (b=3): This metric is an indicator of the effectiveness of the model, taking into consideration the accuracy and recall. Setting b=3, the recall is given more importance.
@@ -72,10 +72,10 @@ We hereby present the results of the metrics implemented inorder to evaluate the
 
 Metric | Boolean Model | Fuzzy Boolean Model
 ---    |---            |---
-r-accuracy | 0.04 | 0.18
-recall | 0.003 | 0.91
-fall-out | 0.0 | 0.17
-f3 | 0.007 | 0.5
+accuracy | 0.04 | 0.01
+recall | 0.005 | 0.90
+fall-out | 0.001 | 0.16
+f3 | 0.005 | 0.25
 
 > These results can be checked by running the metrics.py file from the 'code' folder. The results shown are the individual results per query averaged.
 

@@ -60,8 +60,8 @@ def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
     # return sum
 
 
-    cor1 = 0.4
-    cor2 = 0.6
+    cor1 = 0.6
+    cor2 = 0.4
 
     cand1 = 0.3
     cand2 = 0.7
