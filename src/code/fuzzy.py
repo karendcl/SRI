@@ -98,6 +98,7 @@ def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
                 else:
                     if neg:
                         score = score * -1
+                        clause_matched = False
                     and_scores.append(score)
 
             if clause_matched is True:

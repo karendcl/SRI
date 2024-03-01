@@ -55,8 +55,6 @@ In order to give a score to a document based on a query, we use the Paice model.
 > Because we are using the TF-IDF values to calculate the weights of the words, the score is a measure of the relevance of the document to the query.
 > 
 > We have chosen to implement the Paice model because of its simplicity and its effectiveness in scoring documents based on a query.
->
-> Previamente se habia implementado el modelo mmm pero se decidio usar este finalmente pues el modelo recibia mejores metricas.
 
 
 ## Insufficiencies

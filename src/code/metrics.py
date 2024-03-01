@@ -252,7 +252,7 @@ def calculate_measures(model):
         query = Querys[i]
         recovered_documents = []
         relevant_documents = my_relevant_documents(query.query_id)
-        text_query = processed_query(query.text, True)
+        text_query = processed_query(query.text)
         
         if model == "fuzzy":
             recovered_documents = index_to_id(FuzzyModel(text_query, tokenized_docs))
