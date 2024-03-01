@@ -1,4 +1,5 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
+from boolean_Model import query_to_dnf
 
 vectorizer = None
 matrix_tfidf = None
@@ -39,7 +40,8 @@ def indices_of_words_from_query(query, vectorizer):
     return [vectorizer.vocabulary_[word] for word in query if word in vectorizer.vocabulary_]
 
 
-def Paice_Similarity(query_ind, matrix_tfidf, doc_ind: int):
+# def Paice_Similarity(query_ind, matrix_tfidf, doc_ind: int):
+def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
     '''
     This function calculates the Paice similarity between a query and a document.
     It is basically the sum of the TF-IDF values of the words in the query that are in the document
@@ -52,10 +54,54 @@ def Paice_Similarity(query_ind, matrix_tfidf, doc_ind: int):
     Returns:
     double, the Paice similarity between the query and the document
     '''
-    sum = 0
-    for i in query_ind:
-        sum += matrix_tfidf[doc_ind, i]
-    return sum
+    # sum = 0
+    # for i in query_ind:
+    #     sum += matrix_tfidf[doc_ind, i]
+    # return sum
+
+
+    cor1 = 0.4
+    cor2 = 0.6
+
+    cand1 = 0.3
+    cand2 = 0.7
+
+    terms = Query.split(' | ')
+
+    or_scores = []
+
+    # Función para verificar si un documento satisface una componente conjuntiva de la consulta
+
+    for clause in terms:
+            and_scores = []
+            if clause[0] == '(':
+                clause = clause[1:-1]
+            clause_matched = True
+            needed = clause.split(' & ')
+            for i in needed:
+                neg = False
+                i = str(i)
+                if i[0] == '~':
+                    neg = True
+                    i = i[1:]
+                if i not in vectorizer.vocabulary_:
+                    clause_matched = True if neg else False
+                    continue
+                i = vectorizer.vocabulary_[i]
+                if neg:
+                    and_scores.append(1 - matrix_tfidf[doc_ind, i])
+                    clause_matched = False
+                else:
+                    and_scores.append(matrix_tfidf[doc_ind, i])
+
+            if clause_matched is True:
+                return 1
+            else:
+                or_scores.append(min(and_scores))
+
+    return max(or_scores)
+
+
 
 
 def FuzzyModel(query, documents):
@@ -71,13 +117,19 @@ def FuzzyModel(query, documents):
 
     '''
 
-    vectorizer, matrix_tfidf = Matrix_TFIDF(documents)
+    # query = query.split()
+    # query = [word for word in query if word in vectorizer.vocabulary_]
+    # indices = indices_of_words_from_query(query, vectorizer)
 
-    query = query.split()
-    query = [word for word in query if word in vectorizer.vocabulary_]
-    indices = indices_of_words_from_query(query, vectorizer)
+    query_dnf = query_to_dnf(query)
+    if query_dnf == "error":
+        return []
 
-    scores = [Paice_Similarity(indices, matrix_tfidf, i) for i in range(len(documents))]
+    Matrix_TFIDF(documents)
+    query = str(query_dnf)
+
+    scores = [Paice_Similarity(query, matrix_tfidf, i) for i in range(len(documents)]]
+    # scores = [Paice_Similarity(indices, matrix_tfidf, i) for i in range(len(documents))]
 
     #order the documents by the mean score and return the index of the documents
     ordered = sorted(range(len(scores)), key=lambda k: scores[k], reverse=True)
