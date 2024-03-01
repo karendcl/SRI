@@ -1,8 +1,8 @@
 # Information Retrieval Project
 
 >Authors
-> - [Karen D Cantero Lopez C411]()
-> - [Luis A Rodriguez Otero C411]()
+> - [Karen D Cantero Lopez C411](https://github.com/karendcl)
+> - [Luis A Rodriguez Otero C411](https://github.com/Drackaro)
 
 ## Model Description
 
@@ -53,28 +53,27 @@ In order to determine whether a document is relevant to a query, we use the MMM(
 > A document's weight with respect to an index term is considered to be the degree of membership of the document in the fuzzy set.
 > More specifically, the MMM model uses the minimum and maximum degree of membership of a document in the fuzzy set of the index terms to determine the relevance of the document to the query.
 > The MMM model is calculated as follows:
-> - $$ d_{A \cap B} = min(d_A, d_B) $$
-> - $$ d_{A \cup B} = max(d_A, d_B) $$
-> - $$ d_{ \neg A} = -d_A $$
+> - $d_{A \cap B} = min(d_A, d_B)$
+> - $d_{A \cup B} = max(d_A, d_B)$
+> - $d_{ \neg A} = -d_A$
 > 
 > This means that the degree of membership of a document in the intersection of two index terms is the minimum of the degrees of membership of the document in the two index terms, and the degree of membership of a document in the union of two index terms is the maximum of the degrees of membership of the document in the two index terms.
-> Hence, we can consider the $$ \cap $$ as an AND operator and the $$ \cup $$ as an OR operator.
+> Hence, we can consider the $\cap$ as an AND operator and the $\cup$ as an OR operator.
 > The negation of the degree of membership of a document in an index term is the opposite of the degree of membership of the document in the index term.
 > 
 > The MMM model tries to soften the Boolean operators by considering the query-document similarity to be a linear combination of the min and max weights.
-> - $$ SIM (d, q_{or}) = c_{or1} \cdot max_{i=1}^{n} d_{i} + c_{or2} \cdot min_{i=1}^{n} d_{i} $$
-> - $$ SIM (d, q_{and}) = c_{and1} \cdot max_{i=1}^{n} d_{i} + c_{and2} \cdot min_{i=1}^{n} d_{i} $$
+> - $SIM (d, q_{or}) = c_{or1} \cdot max_{i=1}^{n} d_{i} + c_{or2} \cdot min_{i=1}^{n} d_{i}$
+> - $SIM (d, q_{and}) = c_{and1} \cdot max_{i=1}^{n} d_{i} + c_{and2} \cdot min_{i=1}^{n} d_{i}$
 > 
-> Where $$ c_{or1} $$, $$ c_{or2} $$, $$ c_{and1} $$, and $$ c_{and2} $$ are constants that are used to adjust the weights of the min and max operators.
+> Where $c_{or1}$ , $c_{or2}$ , $c_{and1}$ , and  $c_{and2}$ are constants that are used to adjust the weights of the min and max operators.
+> It is assumed that $c_{or1} + c_{or2} = 1$ and likewise $c_{and1} + c_{and2} = 1$
 > 
 > In our implementation, we take advantage of transforming our query to DNF (Disjunctive Normal Form) to calculate the weights of the min and max operators.
 
 
 ## Insufficiencies
  - The model implemented has very low accuracy results. 
- - The model does not compute the degree of relevance of the documents
-retrieved, so it is not possible to order the documents by relevance. It only
-determines if it is relevant or not.
+ - The model does not compute the degree of relevance of the documents retrieved, so it is not possible to order the documents by relevance. It only determines if it is relevant or not.
 
   
 ## Results
