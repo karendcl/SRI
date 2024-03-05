@@ -102,13 +102,10 @@ def recommendation(request):
     try:
         docs = request.session['docs']
     except:
-        print("No docs in session")
         return render(request, "recommendation.html", {"page_obj": None})
 
     #get the recommendations
-    print(docs)
     rec, authors, genres = recommend.get_recommendations(docs)
-    print(authors)
 
     paginator = Paginator(rec, 3)
     page = request.GET.get('page')

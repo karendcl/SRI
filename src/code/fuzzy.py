@@ -40,25 +40,19 @@ def indices_of_words_from_query(query, vectorizer):
     return [vectorizer.vocabulary_[word] for word in query if word in vectorizer.vocabulary_]
 
 
-# def Paice_Similarity(query_ind, matrix_tfidf, doc_ind: int):
-def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
+def MMM_Similarity(Query, matrix_tfidf, doc_ind: int):
     '''
-    This function calculates the Paice similarity between a query and a document.
-    It is basically the sum of the TF-IDF values of the words in the query that are in the document
+    This function calculates the MMM similarity between a query and a document.
+    It uses the min and max operators and the TF-IDF values of the words in the query that are in the document
 
     Args:
-        - query_ind: list of integers, the indices of the words in the query that are in the vocabulary of the vectorizer
+        - Query: the query in DNF form
         - matrix_tfidf: sparse matrix, the TF-IDF matrix
         - doc_ind: integer, the index of the document
 
     Returns:
-        - double, the Paice similarity between the query and the document
+        - double, the MMM similarity between the query and the document
     '''
-    # sum = 0
-    # for i in query_ind:
-    #     sum += matrix_tfidf[doc_ind, i]
-    # return sum
-
 
     cor1 = 0.6
     cor2 = 0.4
@@ -70,7 +64,6 @@ def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
 
     or_scores = []
 
-    # Función para verificar si un documento satisface una componente conjuntiva de la consulta
 
     for clause in terms:
             and_scores = []
@@ -109,8 +102,6 @@ def Paice_Similarity(Query, matrix_tfidf, doc_ind: int):
     return cand1*max(or_scores) + cand2*min(or_scores)
 
 
-
-
 def FuzzyModel(query, documents):
     '''
     This function is used to search for documents that satisfy a query according to a fuzzy evaluation
@@ -123,9 +114,6 @@ def FuzzyModel(query, documents):
         - list of integers, the indexes of the documents that satisfy the query
 
     '''
-    # query = query.split()
-    # query = [word for word in query if word in vectorizer.vocabulary_]
-    # indices = indices_of_words_from_query(query, vectorizer)
 
     query_dnf = query_to_dnf(query)
     if query_dnf == "error":
@@ -133,8 +121,7 @@ def FuzzyModel(query, documents):
 
     Matrix_TFIDF(documents)
     query = str(query_dnf)
-    scores = [Paice_Similarity(query, matrix_tfidf, i) for i in range(len(documents))]
-    # scores = [Paice_Similarity(indices, matrix_tfidf, i) for i in range(len(documents))]
+    scores = [MMM_Similarity(query, matrix_tfidf, i) for i in range(len(documents))]
 
     #order the documents by the mean score and return the index of the documents
     ordered = sorted(range(len(scores)), key=lambda k: scores[k], reverse=True)
